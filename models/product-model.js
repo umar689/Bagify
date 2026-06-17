@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const productSchema = new mongoose.Schema({
 
@@ -50,4 +51,42 @@ const productSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("Product", productSchema);
+// Joi Validation Schema
+const validateProduct = (data) => {
+    const schema = Joi.object({
+        name: Joi.string()
+            .required(),
+
+        price: Joi.number()
+            .min(0)
+            .required(),
+
+        discount: Joi.number()
+            .min(0)
+            .default(0),
+
+        image: Joi.string()
+            .required(),
+
+        bgcolor: Joi.string(),
+
+        panelcolor: Joi.string(),
+
+        textcolor: Joi.string(),
+
+        stock: Joi.number()
+            .min(0),
+
+        description: Joi.string()
+            .allow("", null)
+    });
+
+    return schema.validate(data);
+};
+
+const productModel = mongoose.model("Product", productSchema);
+
+module.exports = {
+    productModel,
+    validateProduct
+};

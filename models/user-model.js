@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const userSchema = new mongoose.Schema({
 
@@ -30,10 +31,6 @@ const userSchema = new mongoose.Schema({
         default: "/images/default-user.png"
     },
 
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
 
     cart: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -49,4 +46,40 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("User", userSchema);
+// Joi Validation Schema
+const validateUser = (data) => {
+    const schema = Joi.object({
+        username: Joi.string()
+            .min(3)
+            .required(),
+
+        email: Joi.string()
+            .email()
+            .required(),
+
+        password: Joi.string()
+            .min(6)
+            .required(),
+
+        contact: Joi.number(),
+
+        picture: Joi.string(),
+
+        cart: Joi.array().items(
+            Joi.string().hex().length(24)
+        ),
+
+        orders: Joi.array().items(
+            Joi.string().hex().length(24)
+        )
+    });
+
+    return schema.validate(data);
+};
+
+const userModel = mongoose.model("User", userSchema);
+
+module.exports = {
+    userModel,
+    validateUser
+};
