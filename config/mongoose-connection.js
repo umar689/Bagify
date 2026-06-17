@@ -1,15 +1,20 @@
 const mongoose = require("mongoose");
+const debug = require("debug")("development:mongoose-connection");
+const config = require("config");
 
-mongoose.connect("mongodb://127.0.0.1:27017//BagifyDB");
+mongoose.connect(config.get("MONGO_URI"), {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 
 db.on("error", (err) => {
-    console.log("Connection Error:", err);
+    debug("Connection Error:", err);
 });
 
 db.once("open", () => {
-    console.log("MongoDB Connected");
+    debug("MongoDB Connected");
 });
 
 module.exports = db;
