@@ -2,10 +2,8 @@ const mongoose = require("mongoose");
 const debug = require("debug")("development:mongoose-connection");
 const config = require("config");
 
-mongoose.connect(config.get("MONGO_URI"), {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect(config.get("MONGO_URI"))
+
 
 const db = mongoose.connection;
 
