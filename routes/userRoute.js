@@ -1,19 +1,19 @@
 const express=require('express');
 const router=express.Router();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { userModel, validateUser } = require("../models/user-model");
+const genToken=require('../utils/generateToken');
+require("dotenv").config();
 
+const {registerUser , loginUser}=require('../controllers/authController');
 
 router.get('/',function(req,res){
     res.send("user's basic route");
 })
 
-router.post("/register", async (req, res) => {
-    const { error } = validateUser(req.body);
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    }
-    const user = await userModel.create(req.body);
-    res.status(201).json(user);
-});
+router.post("/register", registerUser);
+
+router.post("/login", loginUser);
 
 module.exports=router;
