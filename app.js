@@ -16,7 +16,7 @@ const flash = require("connect-flash");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));app.use(
     session({
-        secret: "mysecretkey",
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false
     })
@@ -27,9 +27,9 @@ app.set('view engine','ejs');
 
 
 app.use('/',indexRouter);
-app.use('/user',userRouter);
+app.use('/users',userRouter);
 app.use('/product',productRouter);
-app.use('/owner',ownerRouter);
+app.use('/owners',ownerRouter);
 app.use('/hourse',hourseRouter);
 
 app.listen(8000,()=>{

@@ -7,6 +7,10 @@ router.get('/',function(req,res){
     res.send("basic product route");
 })
 
+router.get("/create",(rea,res)=>{
+    res.render('createproducts');
+})
+
 router.post("/create", async (req, res) => {
     try {
 

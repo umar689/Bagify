@@ -6,7 +6,7 @@ const { userModel, validateUser } = require("../models/user-model");
 const genToken=require('../utils/generateToken');
 require("dotenv").config();
 
-const {registerUser , loginUser}=require('../controllers/authController');
+const {registerUser , loginUser , logoutUser }=require('../controllers/authController');
 
 router.get('/',function(req,res){
     res.send("user's basic route");
@@ -15,5 +15,7 @@ router.get('/',function(req,res){
 router.post("/register", registerUser);
 
 router.post("/login", loginUser);
+
+router.get('/logout',logoutUser);
 
 module.exports=router;

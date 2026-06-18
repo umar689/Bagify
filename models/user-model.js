@@ -51,17 +51,35 @@ const validateUser = (data) => {
     const schema = Joi.object({
         username: Joi.string()
             .min(3)
-            .required(),
+            .required()
+            .messages({
+                "string.empty": "Username is required",
+                "any.required": "Username is required",
+                "string.min": "Username must be at least 3 characters long"
+            }),
 
         email: Joi.string()
             .email()
-            .required(),
+            .required()
+            .messages({
+                "string.empty": "Email is required",
+                "any.required": "Email is required",
+                "string.email": "Please enter a valid email address"
+            }),
 
         password: Joi.string()
             .min(6)
-            .required(),
+            .required()
+            .messages({
+                "string.empty": "Password is required",
+                "any.required": "Password is required",
+                "string.min": "Password must be at least 6 characters long"
+            }),
 
-        contact: Joi.number(),
+        contact: Joi.number()
+            .messages({
+                "number.base": "Contact must be a number"
+            }),
 
         picture: Joi.string(),
 
