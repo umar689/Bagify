@@ -4,7 +4,8 @@ module.exports.isLoggedIn = (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).send("User is not logged in");
+        req.flash("error", "User is not logged in");
+        return res.status(401).redirect("/");
     }
 
     try {
@@ -12,6 +13,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         req.user = data;
         next();
     } catch (err) {
-        return res.status(401).send("Invalid or expired token");
+        req.flash("error", "Invalid or expired token");
+        return res.status(401).redirect("/");
     }
 };

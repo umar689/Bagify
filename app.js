@@ -5,18 +5,28 @@ const userRouter=require('./routes/userRoute');
 const productRouter=require('./routes/productRouter');
 const ownerRouter=require('./routes/ownerRouter');
 const hourseRouter=require('./routes/hourseRouter.js');
+const indexRouter=require('./routes/indexRouter');
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+const session = require("express-session");
+const flash = require("connect-flash");
+
+
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));app.use(
+    session({
+        secret: "mysecretkey",
+        resave: false,
+        saveUninitialized: false
+    })
+);
+app.use(flash());
 
 app.set('view engine','ejs');
 
-app.get('/',(req,res)=>{
-    const message="";
-    const error="";
-    res.render('index',{message,error});
-});
- 
+
+app.use('/',indexRouter);
 app.use('/user',userRouter);
 app.use('/product',productRouter);
 app.use('/owner',ownerRouter);
