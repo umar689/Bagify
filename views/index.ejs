@@ -1,47 +1,144 @@
 <%- include('./partials/header') %>
+<!-- 
+<% if(error.length > 0){ %>
+    <div class="absolute top-5 left-1/2 -translate-x-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %> -->
+<% if(error.length > 0){ %> 
+    <div id="flash-message"
+        class="fixed top-[72px] left-1/2 -translate-x-1/2 z-[9999] px-4 py-3 rounded-md bg-red-500 shadow-lg transition-all duration-500">
+        <span class="text-white">
+            <%= error[0] %>
+        </span>
+    </div>
 
-    <% if(error.length>0){ %>
-        <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
-            <span class="inline-block mt-1 mb-1 text-white">
-                <%= error %>
-            </span>
+    <script>
+        setTimeout(() => {
+            const flash = document.getElementById("flash-message");
+            if (flash) {
+                flash.classList.add("opacity-0");
+                setTimeout(() => flash.remove(), 500);
+            }
+        }, 10000);
+    </script>
+<% } %>
+
+<div class="w-full h-screen flex px-20">
+
+    <!-- Register -->
+    <div class="w-1/2 flex items-center justify-center h-screen">
+        <div class="w-full px-32">
+            <i class="ri-shopping-bag-line text-2xl"></i>
+
+            <h3 class="text-4xl">
+                welcome to
+                <span class="text-blue-400 font-semibold">Bagify</span>
+            </h3>
+
+            <h4 class="text-2xl mb-5">create your account</h4>
+
+            <form autocomplete="off" action="/users/register" method="post">
+
+                <input
+                    class="bg-zinc-100 block w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                    type="text"
+                    placeholder="Full Name"
+                    name="username">
+
+                <input
+                    class="bg-zinc-100 block w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                    type="email"
+                    placeholder="Email"
+                    name="email">
+
+                <!-- Password -->
+                <div class="relative mb-3">
+                    <input
+                        id="registerPassword"
+                        class="bg-zinc-100 block w-full px-3 py-2 pr-10 border rounded-md border-zinc-200"
+                        type="password"
+                        placeholder="Password"
+                        name="password">
+
+                    <i
+                        id="registerEye"
+                        class="ri-eye-line absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-lg">
+                    </i>
+                </div>
+
+                <input
+                    class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white"
+                    type="submit"
+                    value="Create My Account">
+            </form>
         </div>
-        <% } %>
-            <div class="w-full h-screen flex px-20">
-                <div class="w-1/2 flex items-center justify-center h-screen">
-                    <div class="w-full px-32">
-                         <i class="ri-shopping-bag-line text-2xl"></i>
-                        <h3 class="text-4xl">welcome to <span class="text-blue-400 font-semibold">Bagify</span></h3>
-                        <h4 class="text-2xl mb-5">create your account</h4>
-                        <form autocomplete="off" action="/users/register" method="post">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="text" placeholder="Full Name" name="username">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit"
-                                value="Create My Account">
-                        </form>
-                    </div>
+    </div>
+
+    <!-- Login -->
+    <div class="w-1/2 flex items-center justify-center h-screen">
+        <div class="w-full px-32">
+
+            <h4 class="text-2xl capitalize mb-5">
+                login your account
+            </h4>
+
+            <form autocomplete="off" action="/users/login" method="post">
+
+                <input
+                    class="block bg-zinc-100 w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                    type="email"
+                    placeholder="Email"
+                    name="email">
+
+                <!-- Password -->
+                <div class="relative mb-3">
+                    <input
+                        id="loginPassword"
+                        class="block bg-zinc-100 w-full px-3 py-2 pr-10 border rounded-md border-zinc-200"
+                        type="password"
+                        placeholder="Password"
+                        name="password">
+
+                    <i
+                        id="loginEye"
+                        class="ri-eye-line absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-lg">
+                    </i>
                 </div>
-                <div class="w-1/2 flex items-center justify-center h-screen">
-                    <div class="w-full px-32">
-                        <h4 class="text-2xl capitalize mb-5">login your account</h4>
-                        <form autocomplete="off" action="/users/login" method="post">
-                            <input
-                                class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit"
-                                value="Login">
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <%- include('./partials/footer') %>
+
+                <input
+                    class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white"
+                    type="submit"
+                    value="Login">
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function togglePassword(passwordId, eyeId) {
+        const password = document.getElementById(passwordId);
+        const eye = document.getElementById(eyeId);
+
+        eye.addEventListener("click", () => {
+            if (password.type === "password") {
+                password.type = "text";
+                eye.classList.remove("ri-eye-line");
+                eye.classList.add("ri-eye-off-line");
+            } else {
+                password.type = "password";
+                eye.classList.remove("ri-eye-off-line");
+                eye.classList.add("ri-eye-line");
+            }
+        });
+    }
+
+    togglePassword("registerPassword", "registerEye");
+    togglePassword("loginPassword", "loginEye");
+</script>
+
+<%- include('./partials/footer') %>

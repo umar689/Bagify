@@ -1,4 +1,4 @@
-<%- include('./partials/header') %>
+<!-- <%- include('./partials/header') %>
     <div class="w-full h-screen flex items-start px-20 py-20 gap-10">
         <div class="w-[30%] rounded-md overflow-hidden">
             <div class="w-full h-80 bg-yellow-500"></div>
@@ -43,4 +43,178 @@
             <form action=""></form>
         </div>
     </div>
-    <%- include('./partials/footer') %>
+    <%- include('./partials/footer') %> -->
+
+
+
+<%- include('./partials/header') %>
+<div class="min-h-screen bg-zinc-100 px-10 pt-28 pb-10">
+    
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold mb-8">Shopping Cart</h1>
+
+        <div class="flex gap-8">
+
+            <!-- Cart Products -->
+            <div class="w-[65%] flex flex-col gap-5">
+
+                <% let totalMRP = 0; %>
+                <% let totalDiscount = 0; %>
+
+                <% user.cart.forEach(function(product){ %>
+
+                    <% totalMRP += product.price; %>
+                    <% totalDiscount += product.discount; %>
+
+                    <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all">
+
+                        <div class="flex">
+
+                            <!-- Product Image -->
+                            <div class="w-48 h-48 bg-zinc-200 flex items-center justify-center overflow-hidden">
+                                <% if(product.image && product.image.data){ %>
+                                    <img
+                                        src="data:<%= product.image.contentType %>;base64,<%= product.image.data.toString('base64') %>"
+                                        class="w-full h-full object-cover"
+                                    >
+                                <% } else { %>
+                                    <div class="text-zinc-400">
+                                        No Image
+                                    </div>
+                                <% } %>
+                            </div>
+
+                            <!-- Product Details -->
+                            <div class="flex-1 p-6 flex flex-col justify-between">
+
+                                <div>
+                                    <h2 class="text-2xl font-semibold">
+                                        <%= product.name %>
+                                    </h2>
+
+                                    <div class="mt-3 flex items-center gap-3">
+
+                                        <span class="text-2xl font-bold text-green-600">
+                                            ₹ <%= product.price - product.discount %>
+                                        </span>
+
+                                        <span class="line-through text-zinc-400">
+                                            ₹ <%= product.price %>
+                                        </span>
+
+                                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded-md text-sm">
+                                            Save ₹ <%= product.discount %>
+                                        </span>
+
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between mt-6">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <button
+                                            class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200"
+                                        >
+                                            -
+                                        </button>
+
+                                        <span class="font-semibold">
+                                            1
+                                        </span>
+
+                                        <button
+                                            class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200"
+                                        >
+                                            +
+                                        </button>
+
+                                    </div>
+
+                                    <button class="text-red-500 font-medium hover:text-red-700">
+                                        Remove
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+            <!-- Summary -->
+            <div class="w-[35%]">
+
+                <div class="bg-white rounded-2xl shadow-lg p-8 sticky top-24">
+
+                    <h2 class="text-2xl font-bold mb-6">
+                        Order Summary
+                    </h2>
+
+                    <div class="space-y-4">
+
+                        <div class="flex justify-between">
+                            <span>Total Items</span>
+                            <span><%= user.cart.length %></span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span>Total MRP</span>
+                            <span>₹ <%= totalMRP %></span>
+                        </div>
+
+                        <div class="flex justify-between text-green-600">
+                            <span>Total Discount</span>
+                            <span>- ₹ <%= totalDiscount %></span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span>Platform Fee</span>
+                            <span>₹ 20</span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span>Shipping</span>
+                            <span class="text-green-600">
+                                FREE
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="h-[1px] bg-zinc-200 my-6"></div>
+
+                    <div class="flex justify-between items-center">
+
+                        <h3 class="text-xl font-bold">
+                            Total Amount
+                        </h3>
+
+                        <h3 class="text-2xl font-bold text-green-600">
+                            ₹ <%= (totalMRP - totalDiscount + 20) %>
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="w-full mt-8 py-4 rounded-xl bg-black text-white font-semibold hover:bg-zinc-800 transition"
+                    >
+                        Proceed To Checkout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<%- include('./partials/footer') %>

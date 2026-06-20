@@ -32,10 +32,18 @@ const userSchema = new mongoose.Schema({
     },
 
 
-    cart: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product"
-    }],
+    cart: [
+            {
+                product:{
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref:'product'
+                },
+                quantity:{
+                    type:Number,
+                    default:1
+                }
+            }
+        ],
 
     orders: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -84,8 +92,18 @@ const validateUser = (data) => {
         picture: Joi.string(),
 
         cart: Joi.array().items(
-            Joi.string().hex().length(24)
-        ),
+                Joi.object({
+                    product: Joi.string()
+                        .hex()
+                        .length(24)
+                        .required(),
+
+                    quantity: Joi.number()
+                        .integer()
+                        .min(1)
+                        .default(1)
+                })
+            ),
 
         orders: Joi.array().items(
             Joi.string().hex().length(24)

@@ -4,11 +4,10 @@ const config = require("config");
 
 mongoose.connect(config.get("MONGO_URI"))
 
-
 const db = mongoose.connection;
 
 db.on("error", (err) => {
-    debug("Connection Error:", err);
+    debug("Connection Error:", err.message);
 });
 
 db.once("open", () => {

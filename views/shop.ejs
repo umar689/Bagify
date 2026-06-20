@@ -1,4 +1,22 @@
 <%- include('./partials/header') %>
+<% if(success.length > 0){ %>
+    <div id="success-message"
+        class="fixed top-[72px] left-1/2 -translate-x-1/2 z-[9999] px-4 py-3 rounded-md bg-blue-500 shadow-lg transition-all duration-500">
+        <span class="text-white">
+            <%= success[0] %>
+        </span>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const success = document.getElementById("success-message");
+            if (success) {
+                success.classList.add("opacity-0", "-translate-y-2");
+                setTimeout(() => success.remove(), 500);
+            }
+        }, 5000);
+    </script>
+<% } %>
     <div class="w-full h-screen flex items-start px-20 py-20">
         <div class="w-[25%] flex h-screen flex-col items-start">
             <div class="flex items-center gap-2">
@@ -26,19 +44,34 @@
                 <% products.forEach(function(product){ %>
                     <div class="w-60">
                         <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
-                            <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
-                                alt="">
+                            <% if(product.image && product.image.data) { %>
+                                <img
+                                    class="h-[12rem]"
+                                    src="data:<%= product.image.contentType %>;base64,<%= product.image.data.toString('base64') %>"
+                                    alt=""
+                                >
+                            <% } else { %>
+                                <p>No Image</p>
+                            <% } %>
                         </div>
                         <div
                             class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
                             <div>
-                                <h3>
-                                    <%= product.name %>
-                                </h3>
-                                <h4>₹ <%= product.price %>
-                                </h4>
+                                <h3><%= product.name %></h3>
+                                <% if(product.discount > 0) { %>
+                                    <h4>
+                                        <del>₹ <%= product.price %></del>
+                                    </h4>
+                                    <h4>
+                                        ₹ <%= product.price - product.discount %>
+                                    </h4>
+                                <% } else { %>
+                                    <h4>
+                                        ₹ <%= product.price %>
+                                    </h4>
+                                <% } %>
                             </div>
-                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
+                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/cart/<%=product._id%>">
                                 <i class="ri-add-line"></i>
                             </a>
                         </div>

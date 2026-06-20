@@ -28,10 +28,13 @@ app.set('view engine','ejs');
 
 app.use('/',indexRouter);
 app.use('/users',userRouter);
-app.use('/product',productRouter);
+app.use('/products',productRouter);
 app.use('/owners',ownerRouter);
 app.use('/hourse',hourseRouter);
 
-app.listen(8000,()=>{
-    console.log('Server is running on port 8000');
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`🌐 Local: http://localhost:${PORT}`);
 });
