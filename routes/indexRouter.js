@@ -46,9 +46,12 @@ router.get('/cart', isLoggedIn, async (req, res) => {
 
     // console.log(user);
     // console.log(user.cart[0].product)
-    res.render('cart', { user,
-        loggedin : log
-     });
+    if(user.cart!==undefined && user.cart.length>0){
+        return res.render('cart', { user,
+            loggedin : log
+        });
+    }
+    return res.render('oops',{loggedin:log})
 });
 
 router.post('/cart/delete/:pid',isLoggedIn,async(req,res)=>{
@@ -66,25 +69,34 @@ router.post('/cart/delete/:pid',isLoggedIn,async(req,res)=>{
 router.post('/cart/incbyone/:pid',isLoggedIn,async(req,res)=>{
     // res.send(req.user);
     const user = await userModel.findById(req.user.id).populate('cart.product');
-    // console.log(user.cart[0].product);
-    // console.log(req.params.pid);
-    user.cart = user.cart.filter(
-      item => item._id.toString() !== req.params.pid
+    console.log(user.cart[0]);
+    console.log(req.params.pid);
+    const prodobj = user.cart.find(
+      item => item._id.toString() === req.params.pid
     );
+    prodobj.quantity++;
     await user.save();
     res.redirect(req.get('Referrer'));
 })
 
 router.post('/cart/decbyone/:pid',isLoggedIn,async(req,res)=>{
     // res.send(req.user);
+    // res.send(req.user);
     const user = await userModel.findById(req.user.id).populate('cart.product');
-    // console.log(user.cart[0].product);
-    // console.log(req.params.pid);
-    user.cart = user.cart.filter(
-      item => item._id.toString() !== req.params.pid
+    console.log(user.cart[0]);
+    console.log(req.params.pid);
+    const prodobj = user.cart.find(
+      item => item._id.toString() === req.params.pid
     );
+    prodobj.quantity--;
     await user.save();
     res.redirect(req.get('Referrer'));
 })
 
+router.get("/account", isLoggedIn, async (req, res) => {
+    const user = await userModel.findById(req.user.id);
+    res.render("account", { user,
+        loggedin : log
+     });
+});
 module.exports=router;

@@ -8,6 +8,7 @@
         <h1 class="text-4xl font-bold mb-8">Shopping Cart</h1>
 
         <div class="flex gap-8">
+            <% let c=0 %>
 
             <!-- Cart Products -->
             <div class="w-[65%] flex flex-col gap-5">
@@ -82,6 +83,7 @@
 
                                         <span class="font-semibold">
                                             <%=product.quantity%>
+                                            <% c+=product.quantity%>
                                         </span>
                                         
                                         <form action="/cart/incbyone/<%=product._id%>" method="POST">
@@ -123,7 +125,8 @@
 
                         <div class="flex justify-between">
                             <span>Total Items</span>
-                            <span><%= user.cart.length %></span>
+                            
+                            <span><%= c %></span>
                         </div>
 
                         <div class="flex justify-between">
