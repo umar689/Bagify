@@ -3,6 +3,7 @@ const router=express.Router();
 const {isLoggedIn}=require('../middlewares/isLoggedIn');
 const {productModel,validateProduct}=require('../models/product-model');
 const {userModel}=require('../models/user-model');
+var log = require('../utils/loggedin');
 
 router.get('/',(req,res)=>{
     const error = req.flash("error");
@@ -28,24 +29,62 @@ router.get('/cart/:pid',isLoggedIn,async(req,res)=>{
 router.get('/shop',isLoggedIn,async(req,res)=>{
 
     const allproducts=await productModel.find();
-    var loggedin=false;
+    // var loggedin=false;
     const success=req.flash("success");
-    if(req.cookies.token){
-        loggedin=true;
-    }
+    // if(req.cookies.token){
+    //     loggedin=true;
+    // }
     res.render('shop',{
         products:allproducts,
-        loggedin,
+        loggedin : log,
         success
     });
 })
 
-router.get('/cart',isLoggedIn,async (req,res)=>{
-    const user=await userModel.findById(req.user.id).populate('cart');
-    console.log(user);
-    res.render('cart',{user});
+router.get('/cart', isLoggedIn, async (req, res) => {
+    const user = await userModel.findById(req.user.id).populate('cart.product');
+
+    // console.log(user);
+    // console.log(user.cart[0].product)
+    res.render('cart', { user,
+        loggedin : log
+     });
 });
 
+router.post('/cart/delete/:pid',isLoggedIn,async(req,res)=>{
+    // res.send(req.user);
+    const user = await userModel.findById(req.user.id).populate('cart.product');
+    // console.log(user.cart[0].product);
+    // console.log(req.params.pid);
+    user.cart = user.cart.filter(
+      item => item._id.toString() !== req.params.pid
+    );
+    await user.save();
+    res.redirect(req.get('Referrer'));
+})
 
+router.post('/cart/incbyone/:pid',isLoggedIn,async(req,res)=>{
+    // res.send(req.user);
+    const user = await userModel.findById(req.user.id).populate('cart.product');
+    // console.log(user.cart[0].product);
+    // console.log(req.params.pid);
+    user.cart = user.cart.filter(
+      item => item._id.toString() !== req.params.pid
+    );
+    await user.save();
+    res.redirect(req.get('Referrer'));
+})
+
+router.post('/cart/decbyone/:pid',isLoggedIn,async(req,res)=>{
+    // res.send(req.user);
+    const user = await userModel.findById(req.user.id).populate('cart.product');
+    // console.log(user.cart[0].product);
+    // console.log(req.params.pid);
+    user.cart = user.cart.filter(
+      item => item._id.toString() !== req.params.pid
+    );
+    await user.save();
+    res.redirect(req.get('Referrer'));
+})
 
 module.exports=router;

@@ -1,49 +1,3 @@
-<!-- <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20 gap-10">
-        <div class="w-[30%] rounded-md overflow-hidden">
-            <div class="w-full h-80 bg-yellow-500"></div>
-            <div class="w-full flex justify-between px-5 py-4">
-                <h3 class="text-2xl">Clinge Bag</h3>
-                <div class="flex items-center gap-2">
-                    <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-add-line"></i>
-                    <div class="px-2 py-1 rounded-md bg-white text-black">01</div>
-                    <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-subtract-line"></i>
-                </div>
-            </div>
-            <div class="flex items-center justify-between px-5 py-3">
-                <h4 class="text-lg">Net Total</h4>
-                <h2 class="text-lg">₹ 1200</h2>
-            </div>
-        </div>
-        <div class="w-[70%]">
-            <h3 class="text-xl">Price Breakdown</h3>
-            <div class="px-10 mt-5">
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Total MRP</h4>
-                    <h4>₹ 1920</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Discount on MRP</h4>
-                    <h4>₹ 0</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Platform Fee</h4>
-                    <h4>₹ 20</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Shipping Fee</h4>
-                    <h4>FREE</h4>
-                </div>
-            </div>
-            <div class="w-full h-[1px] bg-black mt-10"></div>
-            <div class="flex mt-5">
-                <h3 class="w-1/3 text-xl">Total Amount</h3>
-                <h3 class="font-semibold text-xl text-green-600">₹ 1940</h3>
-            </div>
-            <form action=""></form>
-        </div>
-    </div>
-    <%- include('./partials/footer') %> -->
 
 
 
@@ -62,9 +16,9 @@
                 <% let totalDiscount = 0; %>
 
                 <% user.cart.forEach(function(product){ %>
-
-                    <% totalMRP += product.price; %>
-                    <% totalDiscount += product.discount; %>
+                    
+                    <% totalMRP += product.product.price*product.quantity %>
+                    <% totalDiscount += product.product.discount*product.quantity %>
 
                     <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all">
 
@@ -72,9 +26,9 @@
 
                             <!-- Product Image -->
                             <div class="w-48 h-48 bg-zinc-200 flex items-center justify-center overflow-hidden">
-                                <% if(product.image && product.image.data){ %>
+                                <% if(product.product.image && product.product.image.data){ %>
                                     <img
-                                        src="data:<%= product.image.contentType %>;base64,<%= product.image.data.toString('base64') %>"
+                                        src="data:<%= product.product.image.contentType %>;base64,<%= product.product.image.data.toString('base64') %>"
                                         class="w-full h-full object-cover"
                                     >
                                 <% } else { %>
@@ -89,21 +43,21 @@
 
                                 <div>
                                     <h2 class="text-2xl font-semibold">
-                                        <%= product.name %>
+                                        <%= product.product.name %>
                                     </h2>
 
                                     <div class="mt-3 flex items-center gap-3">
 
                                         <span class="text-2xl font-bold text-green-600">
-                                            ₹ <%= product.price - product.discount %>
+                                            ₹ <%= product.product.price - product.product.discount %>
                                         </span>
 
                                         <span class="line-through text-zinc-400">
-                                            ₹ <%= product.price %>
+                                            ₹ <%= product.product.price %>
                                         </span>
 
                                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded-md text-sm">
-                                            Save ₹ <%= product.discount %>
+                                            Save ₹ <%= product.product.discount %>
                                         </span>
 
                                     </div>
@@ -112,28 +66,37 @@
                                 <div class="flex items-center justify-between mt-6">
 
                                     <div class="flex items-center gap-3">
-
-                                        <button
-                                            class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200"
-                                        >
-                                            -
-                                        </button>
+                                        <% if(product.quantity===1){%>
+                                            <form action="/cart/delete/<%=product._id%>" method="POST">
+                                                <button type="submit" class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200">
+                                                    -
+                                                </button>
+                                            </form>
+                                        <%} else {%>
+                                            <form action="/cart/decbyone/<%=product._id%>" method="POST">
+                                            <button type="submit" class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200">
+                                                -
+                                            </button>
+                                            </form>
+                                        <%}%>
 
                                         <span class="font-semibold">
-                                            1
+                                            <%=product.quantity%>
                                         </span>
-
-                                        <button
-                                            class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200"
-                                        >
+                                        
+                                        <form action="/cart/incbyone/<%=product._id%>" method="POST">
+                                        <button class="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200">
                                             +
                                         </button>
+                                        </form>
 
                                     </div>
-
-                                    <button class="text-red-500 font-medium hover:text-red-700">
-                                        Remove
-                                    </button>
+                                    <form action="/cart/delete/<%=product._id%>" method="POST">
+                                        <button type="submit" class="text-red-500 font-medium hover:text-red-700">
+                                            Remove
+                                        </button>
+                                    </form>
+                                    
 
                                 </div>
 
