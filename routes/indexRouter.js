@@ -4,6 +4,7 @@ const {isLoggedIn}=require('../middlewares/isLoggedIn');
 const {productModel,validateProduct}=require('../models/product-model');
 const {userModel}=require('../models/user-model');
 var log = require('../utils/loggedin');
+const upload=require('../config/multer')
 
 router.get('/',(req,res)=>{
     const error = req.flash("error");
@@ -95,8 +96,54 @@ router.post('/cart/decbyone/:pid',isLoggedIn,async(req,res)=>{
 
 router.get("/account", isLoggedIn, async (req, res) => {
     const user = await userModel.findById(req.user.id);
-    res.render("account", { user,
+    res.render("account", {
+        success:req.flash('success'), 
+        user,
         loggedin : log
      });
 });
+
+router.get("/account/edit", isLoggedIn, async (req, res) => {
+    const user = await userModel.findById(req.user.id);
+    res.render("edit-profile", { user ,
+        loggedin : log
+    });
+});
+
+router.post("/account/edit", isLoggedIn, async (req, res) => {
+    const { username, contact, picture } = req.body;
+    await userModel.findByIdAndUpdate(
+        req.user.id,
+        {
+            username,
+            contact,
+            picture
+        }
+    );
+    req.flash("success", "Profile updated successfully");
+    res.redirect("/account");
+});
+
+
+router.post('/upload',
+    upload.single('picture'),
+    isLoggedIn,
+    async (req, res) => {
+        console.log(req.file);
+        const user = await userModel.findById(req.user.id);
+        user.picture = {
+            data: req.file.buffer,
+            contentType: req.file.mimetype
+        };
+        await user.save();
+        res.redirect('/account');
+});
+
+// router.post('/upload',
+//     upload.any(),
+//     (req, res) => {
+//         console.log(req.files);
+//         res.send("ok");
+//     }
+// );
 module.exports=router;
