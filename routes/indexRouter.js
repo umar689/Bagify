@@ -27,26 +27,75 @@ router.get('/cart/:pid',isLoggedIn,async(req,res)=>{
     res.redirect('/shop')
 })
 
-router.get('/shop',isLoggedIn,async(req,res)=>{
+router.get('/shop', isLoggedIn, async (req, res) => {
 
-    const allproducts=await productModel.find();
-    // var loggedin=false;
+    let allproducts;
+
+    if (req.query.sortby === "newest") {
+        allproducts = await productModel.find().sort({ createdAt: -1 });
+    }
+    else {
+        // Popular ke liye abhi default order
+        allproducts = await productModel.find();
+    }
+
+    const success = req.flash("success");
+
+    res.render('shop', {
+        products: allproducts,
+        loggedin: log,
+        success,
+        currentRoute: req.path,
+        sortby: req.query.sortby || 'popular'
+    });
+});
+
+router.get('/shop/discounted',isLoggedIn,async(req,res)=>{
+    let query = productModel.find({
+        discount: { $gt: 0 }
+    });
+
+    if (req.query.sortby === "newest") {
+        query = query.sort({ createdAt: -1 });
+    }
+
+    const allproducts = await query;
+    
     const success=req.flash("success");
-    // if(req.cookies.token){
-    //     loggedin=true;
-    // }
-    res.render('shop',{
-        products:allproducts,
-        loggedin : log,
-        success
+    res.render('shop', {
+        products: allproducts,
+        loggedin: log,
+        success,
+        currentRoute: req.path,
+        sortby: req.query.sortby || 'popular'
     });
 })
 
+router.get('/shop/new', isLoggedIn, async (req, res) => {
+     const fourDaysAgo = new Date();
+    fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
+
+    let query = productModel.find({
+        createdAt: { $gte: fourDaysAgo }
+    });
+
+    if (req.query.sortby === "newest") {
+        query = query.sort({ createdAt: -1 });
+    }
+
+    const allproducts = await query;
+    const success = req.flash("success");
+        res.render('shop', {
+        products: allproducts,
+        loggedin: log,
+        success,
+        currentRoute: req.path,
+        sortby: req.query.sortby || 'popular'
+    });
+});
+
 router.get('/cart', isLoggedIn, async (req, res) => {
     const user = await userModel.findById(req.user.id).populate('cart.product');
-
-    // console.log(user);
-    // console.log(user.cart[0].product)
     if(user.cart!==undefined && user.cart.length>0){
         return res.render('cart', { user,
             loggedin : log
@@ -56,10 +105,7 @@ router.get('/cart', isLoggedIn, async (req, res) => {
 });
 
 router.post('/cart/delete/:pid',isLoggedIn,async(req,res)=>{
-    // res.send(req.user);
     const user = await userModel.findById(req.user.id).populate('cart.product');
-    // console.log(user.cart[0].product);
-    // console.log(req.params.pid);
     user.cart = user.cart.filter(
       item => item._id.toString() !== req.params.pid
     );
@@ -81,8 +127,6 @@ router.post('/cart/incbyone/:pid',isLoggedIn,async(req,res)=>{
 })
 
 router.post('/cart/decbyone/:pid',isLoggedIn,async(req,res)=>{
-    // res.send(req.user);
-    // res.send(req.user);
     const user = await userModel.findById(req.user.id).populate('cart.product');
     console.log(user.cart[0]);
     console.log(req.params.pid);
@@ -129,7 +173,6 @@ router.post('/upload',
     upload.single('picture'),
     isLoggedIn,
     async (req, res) => {
-        console.log(req.file);
         const user = await userModel.findById(req.user.id);
         user.picture = {
             data: req.file.buffer,
@@ -139,11 +182,5 @@ router.post('/upload',
         res.redirect('/account');
 });
 
-// router.post('/upload',
-//     upload.any(),
-//     (req, res) => {
-//         console.log(req.files);
-//         res.send("ok");
-//     }
-// );
+
 module.exports=router;
