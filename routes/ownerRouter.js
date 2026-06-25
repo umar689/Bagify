@@ -3,6 +3,10 @@ const router=express.Router();
 const { ownerModel, validateOwner } = require("../models/owner-model");
 const { productModel, validateProduct } = require("../models/product-model");
 const upload = require('../config/multer-config');
+const hash = require('../utils/hashpassword');
+const gentokenowner=require('../utils/generateTokenOwner');
+const bcrypt = require("bcrypt");
+const isOwnerLoggedIn = require('../middlewares/isOwnerLoggedIn');
 
 router.get('/',function(req,res){
     res.send("basic owner route");
@@ -21,11 +25,14 @@ if(process.env.NODE_ENV==="development"){
                 return res.status(400).send(error.details[0].message);
             }
             let {username,email,password}=req.body;
+            const hashedPassword = await hash(password);
             const user=await ownerModel.create({
                 username,
                 email,
-                password
+                password : hashedPassword
             })
+            const token = gentokenowner(user);
+            res.cookie('token',token);
             res.send(user);
         } catch(err){
             res.send(err.message);
@@ -33,18 +40,59 @@ if(process.env.NODE_ENV==="development"){
     });
 }
 
-router.get('/admin',(req,res)=>{
-    res.render('admin');
+router.get('/login',(req,res)=>{
+    res.render('ownerlogin');
 })
 
-router.get('/product/create',(req,res)=>{
+router.post('/login',async(req,res)=>{
+    let {email,password}=req.body;
+    const user=await ownerModel.findOne({email});
+    if (!user) {
+        return res.status(400).send("Invalid email or password");
+    }
+    const isMatch = await bcrypt.compare(
+        password,        // user ne jo password enter kiya
+        user.password    // database me hashed password
+    );
+    if (!isMatch) {
+        return res.status(400).send("Invalid email or password");
+    }
+    const token = gentokenowner(user);
+    res.cookie('token',token);
+    res.redirect('/owners/admin');
+})
+
+router.get('/logout',isOwnerLoggedIn,async(req,res)=>{
+    if(req.cookies.token){
+        res.clearCookie('token');
+    }
+    res.redirect('/owners/login')
+});
+
+router.get('/admin',isOwnerLoggedIn,async (req,res)=>{
+    const allproducts = await productModel.find();
+    // console.log(allproducts);
+    res.render('admin',{allproducts});
+})
+
+router.get('/product/deleteone/:pid',isOwnerLoggedIn,async(req,res)=>{
+    await productModel.findByIdAndDelete(req.params.pid);
+    res.redirect(req.get('Referrer'));
+})
+
+router.get('/product/deleteall',isOwnerLoggedIn, async (req, res) => {
+    await productModel.deleteMany({});
+    res.redirect(req.get('Referrer') || '/owners/admin');
+});
+
+router.get('/product/create',isOwnerLoggedIn,(req,res)=>{
     res.render("createproducts",{
         success:""
     });
 })
 
 router.post(
-    "/product/create",
+    "/product/create",isOwnerLoggedIn,
     upload.single("image"),
     async (req, res) => {
         try {

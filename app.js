@@ -10,11 +10,13 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const session = require("express-session");
 const flash = require("connect-flash");
+const path = require("path");
 
-
-
+app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));app.use(
+app.use(express.urlencoded({ extended: true }));
+app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,

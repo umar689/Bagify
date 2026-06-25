@@ -52,29 +52,41 @@
                 <a class="block w-fit mb-2" href="">Discount</a>
             </div> -->
         </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
-            <div class="flex items-start gap-5">
+        <div class="w-[75%] h-screen overflow-y-auto">
+    
+            <div class="flex flex-wrap gap-5">
+
                 <% products.forEach(function(product){ %>
-                    <div class="w-60">
-                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+
+                    <div class="w-60 flex flex-col">
+
+                        <div class="w-full h-52 flex items-center justify-center"
+                            style="background-color:<%= product.bgcolor %>">
+
                             <% if(product.image && product.image.data) { %>
                                 <img
-                                    class="h-[12rem]"
+                                    class="h-[12rem] object-contain"
                                     src="data:<%= product.image.contentType %>;base64,<%= product.image.data.toString('base64') %>"
                                     alt=""
                                 >
                             <% } else { %>
                                 <p>No Image</p>
                             <% } %>
+
                         </div>
+
                         <div
-                            class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+                            class="flex justify-between items-center px-4 py-4 flex-1"
+                            style="background-color:<%= product.panelcolor %>; color:<%= product.textcolor %>">
+
                             <div>
-                                <h3><%= product.name %></h3>
+                                <h3 class="font-medium"><%= product.name %></h3>
+
                                 <% if(product.discount > 0) { %>
                                     <h4>
                                         <del>₹ <%= product.price %></del>
                                     </h4>
+
                                     <h4>
                                         ₹ <%= product.price - product.discount %>
                                     </h4>
@@ -84,13 +96,23 @@
                                     </h4>
                                 <% } %>
                             </div>
-                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/cart/<%=product._id%>">
+
+                            <a
+                                class="w-7 h-7 flex items-center justify-center rounded-full bg-white"
+                                href="/cart/<%= product._id %>">
+
                                 <i class="ri-add-line"></i>
+
                             </a>
+
                         </div>
+
                     </div>
-                    <% }) %>
+
+                <% }) %>
+
             </div>
+
         </div>
     </div>
     <%- include('./partials/footer') %>

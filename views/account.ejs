@@ -32,10 +32,11 @@
 
                 <div class="flex flex-col items-center">
 
-                   <img 
-                        src="data:<%= user.picture.contentType %>;base64,<%= user.picture.data.toString('base64') %>"
-                        alt="Profile Picture"
-                        class="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg ring-2 ring-zinc-200"
+                   <img
+                        src="<%= user.picture?.data
+                            ? `data:${user.picture.contentType};base64,${user.picture.data.toString('base64')}`
+                            : '/images/person.png' %>"
+                        alt="Profile"
                     />
                     <h2 class="text-2xl font-semibold mt-4">
                         <%= user.username %>
