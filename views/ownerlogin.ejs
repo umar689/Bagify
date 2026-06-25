@@ -1,48 +1,44 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex px-20">
-    <div class="w-1/2 flex items-center justify-center h-screen">
-        <div class="w-full max-w-md px-10">
 
-            <h4 class="text-3xl font-semibold mb-2">Admin Access</h4>
-            <p class="text-zinc-500 mb-6">Sign in to manage your store.</p>
+<main class="min-h-screen px-5 pt-28 pb-12">
+    <section class="site-shell grid min-h-[calc(100vh-8rem)] items-center gap-8 lg:grid-cols-[1fr_0.9fr]" data-parallax>
+        <div class="hero-reveal">
+            <p class="mb-4 inline-flex rounded-full bg-white/80 px-4 py-2 text-sm font-extrabold text-[#4F8EF7] shadow-sm">
+                Bagify owner console
+            </p>
+            <h1 class="section-title max-w-2xl text-6xl font-extrabold">Manage the store with clarity.</h1>
+            <p class="mt-5 max-w-lg text-lg leading-8 muted-text">
+                A softer, cleaner workspace for keeping the collection polished.
+            </p>
+        </div>
 
-            <form action="/owners/login" method="post">
-
-                <input
-                    class="block bg-zinc-100 w-full px-4 py-3 border rounded-lg mb-4 border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="email"
-                    placeholder="Email"
-                    name="email">
-
-                <input
-                    class="block bg-zinc-100 w-full px-4 py-3 border rounded-lg mb-4 border-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="password"
-                    placeholder="Password"
-                    name="password">
-
-                <input
-                    class="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-                    type="submit"
-                    value="Login">
-            </form>
-
-            <!-- Divider -->
-            <div class="flex items-center my-8">
-                <div class="flex-1 h-px bg-zinc-300"></div>
-                <span class="px-4 text-sm text-zinc-500">OR</span>
-                <div class="flex-1 h-px bg-zinc-300"></div>
+        <div class="hero-reveal premium-card p-8" data-depth="10">
+            <div class="mb-7">
+                <span class="icon-pill mb-4 h-12 w-12 text-xl text-[#4F8EF7]">
+                    <i class="ri-shield-user-line"></i>
+                </span>
+                <h2 class="text-3xl font-extrabold">Admin Access</h2>
+                <p class="mt-2 muted-text">Sign in to manage your store.</p>
             </div>
 
-            <!-- Buyer Login -->
-            <a
-    href="/"
-    class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-5 py-3 text-white font-medium transition-all duration-300 hover:bg-zinc-800 hover:shadow-lg"
->
-    <i class="ri-shopping-bag-3-line text-lg"></i>
-    Login as Buyer
-</a>
+            <form action="/owners/login" method="post" class="space-y-4">
+                <input class="premium-input" type="email" placeholder="Email" name="email">
+                <input class="premium-input" type="password" placeholder="Password" name="password">
+                <input class="premium-btn w-full cursor-pointer px-6 py-4" type="submit" value="Login">
+            </form>
 
+            <div class="my-8 flex items-center">
+                <div class="h-px flex-1 bg-slate-200"></div>
+                <span class="px-4 text-sm font-bold muted-text">OR</span>
+                <div class="h-px flex-1 bg-slate-200"></div>
+            </div>
+
+            <a href="/" class="premium-btn premium-btn-dark w-full px-6 py-4">
+                <i class="ri-shopping-bag-3-line text-lg"></i>
+                Login as Buyer
+            </a>
         </div>
-    </div>
-</div>
-    <%- include('./partials/footer') %>
+    </section>
+</main>
+
+<%- include('./partials/footer') %>

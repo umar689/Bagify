@@ -1,84 +1,70 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex flex-col">
-                <a class="block w-fit mb-2" href="/owners/admin">All Products</a>
-                <a class="block w-fit mb-2" href="/owners/product/create">Create new product</a>
+
+<main class="min-h-screen px-5 pt-28 pb-12">
+    <section class="site-shell">
+        <div class="hero-reveal mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-[#4F8EF7]">Owner console</p>
+                <h1 class="section-title mt-2 text-5xl font-extrabold md:text-6xl">All Products</h1>
             </div>
-        </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
+
             <a
                 href="/owners/product/deleteall"
-                onclick="return confirm('⚠️ Are you sure you want to delete all products? This action cannot be undone.')"
-                class="w-fit group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-red-400 border border-zinc-800 hover:border-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 shadow-sm"
+                onclick="return confirm('Are you sure you want to delete all products? This action cannot be undone.')"
+                class="premium-btn premium-btn-accent px-6 py-3"
             >
-                <i class="ri-delete-bin-6-line group-hover:rotate-12 transition-transform"></i>
+                <i class="ri-delete-bin-6-line transition-transform duration-300"></i>
                 Delete All Products
             </a>
-            <div class="flex flex-wrap gap-5">
-        <div class="w-[75%] h-screen overflow-y-auto">
-            
-                    <div class="flex flex-wrap gap-5">
-
-                        <% allproducts.forEach(function(product){ %>
-
-                            <div class="w-60 flex flex-col">
-
-                                <div class="w-full h-52 flex items-center justify-center"
-                                    style="background-color:<%= product.bgcolor %>">
-
-                                    <% if(product.image && product.image.data) { %>
-                                        <img
-                                            class="h-[12rem] object-contain"
-                                            src="data:<%= product.image.contentType %>;base64,<%= product.image.data.toString('base64') %>"
-                                            alt=""
-                                        >
-                                    <% } else { %>
-                                        <p>No Image</p>
-                                    <% } %>
-
-                                </div>
-
-                                <div
-                                    class="flex justify-between items-center px-4 py-4 flex-1"
-                                    style="background-color:<%= product.panelcolor %>; color:<%= product.textcolor %>">
-
-                                    <div>
-                                        <h3 class="font-medium"><%= product.name %></h3>
-
-                                        <% if(product.discount > 0) { %>
-                                            <h4>
-                                                <del>₹ <%= product.price %></del>
-                                            </h4>
-
-                                            <h4>
-                                                ₹ <%= product.price - product.discount %>
-                                            </h4>
-                                        <% } else { %>
-                                            <h4>
-                                                ₹ <%= product.price %>
-                                            </h4>
-                                        <% } %>
-                                        
-                                    </div>
-                                        <a
-                                            class="w-7 h-7 flex items-center justify-center rounded-full bg-white"
-                                            href="/owners/product/deleteone/<%= product._id %>">
-                                            <i class="ri-subtract-line"></i>
-                                        </a>
-                                </div>
-                                
-                            </div>
-                            
-
-                        <% }) %>
-
-                    </div>
-
-                </div>
-
-            </div>  
         </div>
-    </div>
-    <%- include('./partials/footer') %>
-   
+
+        <div class="grid gap-8 lg:grid-cols-[250px_1fr]">
+            <aside class="reveal premium-card h-fit p-6">
+                <p class="mb-5 text-sm font-extrabold uppercase tracking-[0.18em] muted-text">Manage</p>
+                <div class="flex flex-col gap-3">
+                    <a class="soft-link rounded-2xl px-4 py-3 font-bold" href="/owners/admin">All Products</a>
+                    <a class="soft-link rounded-2xl px-4 py-3 font-bold" href="/owners/product/create">Create new product</a>
+                </div>
+            </aside>
+
+            <div class="stagger-group grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <% allproducts.forEach(function(product){ %>
+                    <article class="product-card premium-card premium-card-hover stagger-item flex flex-col p-4">
+                        <div class="product-media flex items-center justify-center p-6"
+                            style="background-color:<%= product.bgcolor %>">
+                            <% if(product.image && product.image.data) { %>
+                                <img
+                                    class="h-56 max-w-full object-contain"
+                                    src="data:<%= product.image.contentType %>;base64,<%= product.image.data.toString('base64') %>"
+                                    alt="<%= product.name %>"
+                                >
+                            <% } else { %>
+                                <p class="font-semibold muted-text">No Image</p>
+                            <% } %>
+                        </div>
+
+                        <div class="flex flex-1 items-center justify-between gap-4 px-2 py-5">
+                            <div>
+                                <h3 class="text-lg font-extrabold"><%= product.name %></h3>
+                                <% if(product.discount > 0) { %>
+                                    <div class="mt-2 flex flex-wrap items-center gap-2">
+                                        <span class="text-xl font-extrabold">&#8377; <%= product.price - product.discount %></span>
+                                        <del class="text-sm font-bold text-slate-400">&#8377; <%= product.price %></del>
+                                    </div>
+                                <% } else { %>
+                                    <p class="mt-2 text-xl font-extrabold">&#8377; <%= product.price %></p>
+                                <% } %>
+                            </div>
+
+                            <a class="icon-pill h-12 w-12 shrink-0 text-xl text-red-500" href="/owners/product/deleteone/<%= product._id %>" aria-label="Delete <%= product.name %>">
+                                <i class="ri-subtract-line"></i>
+                            </a>
+                        </div>
+                    </article>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('./partials/footer') %>

@@ -8,24 +8,32 @@
     <title>Bagify</title>
     
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-    
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/stylesheets/ui.css">
 </head>
 
-<body style="font-family: 'Poppins', sans-serif;">
-    <nav class="w-full fixed top-0 left-0 px-8 py-4 flex justify-between items-center bg-white shadow-sm z-50">
-    <h3 class="text-2xl font-semibold tracking-tight">Bagify</h3>
+<body>
+    <nav class="glass-nav fixed top-4 left-1/2 z-50 flex w-[min(1180px,calc(100%_-_32px))] -translate-x-1/2 items-center justify-between rounded-full px-6 py-3">
+    <a href="/" class="group flex items-center gap-3">
+        <span class="icon-pill h-10 w-10 bg-white text-xl text-blue-500">
+            <i class="ri-shopping-bag-3-line"></i>
+        </span>
+        <h3 class="text-2xl font-extrabold tracking-tight">Bagify</h3>
+    </a>
     <% if (typeof loggedin !== 'undefined' && loggedin) { %>
-    <div class="flex items-center gap-8 text-[15px] font-medium">
-        <a href="/shop" class="hover:text-gray-500 transition-all">Shop</a>
-        <a href="/cart" class="hover:text-gray-500 transition-all">Cart</a>
-        <a href="/account" class="hover:text-gray-500 transition-all">My Account</a>
-        <a href="/users/logout" class="text-red-500 hover:text-red-600 transition-all">Logout</a>
+    <div class="flex items-center gap-7 text-[15px] font-bold">
+        <a href="/shop" class="nav-link">Shop</a>
+        <a href="/cart" class="nav-link flex items-center gap-2">
+            <i class="ri-shopping-cart-2-line text-lg transition-transform duration-300 hover:rotate-6"></i>
+            Cart
+        </a>
+        <a href="/account" class="nav-link">My Account</a>
+        <a href="/users/logout" class="premium-btn premium-btn-accent px-5 py-2 text-sm">Logout</a>
     </div>
     <%}%>
     <% if (typeof isOwner !== 'undefined' && isOwner) { %>
-    <div class="flex items-center gap-8 text-[15px] font-medium">
-        <a href="/owners/logout" class="text-red-500 hover:text-red-600 transition-all">Logout</a>
+    <div class="flex items-center gap-8 text-[15px] font-bold">
+        <a href="/owners/logout" class="premium-btn premium-btn-accent px-5 py-2 text-sm">Logout</a>
     </div>
     <%}%>
 </nav>
