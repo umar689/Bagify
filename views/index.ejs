@@ -78,45 +78,60 @@
     </div>
 
     <!-- Login -->
-    <div class="w-1/2 flex items-center justify-center h-screen">
-        <div class="w-full px-32">
+<div class="w-1/2 flex items-center justify-center h-screen">
+    <div class="w-full px-32">
 
-            <h4 class="text-2xl capitalize mb-5">
-                login your account
-            </h4>
+        <h4 class="text-2xl capitalize mb-5">
+            Login your account
+        </h4>
 
-            <form autocomplete="off" action="/users/login" method="post">
+        <form autocomplete="off" action="/users/login" method="post">
 
+            <input
+                class="block bg-zinc-100 w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                type="email"
+                placeholder="Email"
+                name="email">
+
+            <!-- Password -->
+            <div class="relative mb-3">
                 <input
-                    class="block bg-zinc-100 w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
-                    type="email"
-                    placeholder="Email"
-                    name="email">
+                    id="loginPassword"
+                    class="block bg-zinc-100 w-full px-3 py-2 pr-10 border rounded-md border-zinc-200"
+                    type="password"
+                    placeholder="Password"
+                    name="password">
 
-                <!-- Password -->
-                <div class="relative mb-3">
-                    <input
-                        id="loginPassword"
-                        class="block bg-zinc-100 w-full px-3 py-2 pr-10 border rounded-md border-zinc-200"
-                        type="password"
-                        placeholder="Password"
-                        name="password">
+                <i
+                    id="loginEye"
+                    class="ri-eye-line absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-lg">
+                </i>
+            </div>
 
-                    <i
-                        id="loginEye"
-                        class="ri-eye-line absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-lg">
-                    </i>
-                </div>
+            <input
+                class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white hover:bg-blue-600 transition"
+                type="submit"
+                value="Login">
+        </form>
 
-                <input
-                    class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white"
-                    type="submit"
-                    value="Login">
-            </form>
-
+        <!-- Divider -->
+        <div class="flex items-center my-8">
+            <div class="flex-1 h-px bg-zinc-300"></div>
+            <span class="px-4 text-sm text-zinc-500">OR</span>
+            <div class="flex-1 h-px bg-zinc-300"></div>
         </div>
-    </div>
 
+        <!-- Owner Login -->
+        <a
+            href="/owners/login"
+            class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-zinc-900 to-black text-white font-medium hover:scale-[1.02] hover:shadow-lg transition-all duration-300"
+        >
+            <i class="ri-admin-line text-lg"></i>
+            Login as Owner
+        </a>
+
+    </div>
+</div>
 </div>
 
 <script>

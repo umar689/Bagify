@@ -7,6 +7,12 @@ const hash = require('../utils/hashpassword');
 const gentokenowner=require('../utils/generateTokenOwner');
 const bcrypt = require("bcrypt");
 const isOwnerLoggedIn = require('../middlewares/isOwnerLoggedIn');
+const seedProducts=require('../scripts/seedproducts');
+
+router.use((req, res, next) => {
+    res.locals.isOwner = !!req.cookies.token;
+    next();
+});
 
 router.get('/',function(req,res){
     res.send("basic owner route");
@@ -38,6 +44,14 @@ if(process.env.NODE_ENV==="development"){
             res.send(err.message);
         }
     });
+
+    router.get('/addDummyProducts',async(req,res)=>{
+        try{
+            await seedProducts();
+        } catch(err){
+            res.send(err.message);
+        }
+    })
 }
 
 router.get('/login',(req,res)=>{
@@ -76,8 +90,10 @@ router.get('/admin',isOwnerLoggedIn,async (req,res)=>{
 })
 
 router.get('/product/deleteone/:pid',isOwnerLoggedIn,async(req,res)=>{
-    await productModel.findByIdAndDelete(req.params.pid);
-    res.redirect(req.get('Referrer'));
+    console.log('route hit');
+    const p=await productModel.findByIdAndDelete(req.params.pid);
+    console.log(p);
+    res.redirect(req.get('Referrer'));  
 })
 
 router.get('/product/deleteall',isOwnerLoggedIn, async (req, res) => {

@@ -26,11 +26,11 @@
                         <div class="flex">
 
                             <!-- Product Image -->
-                            <div class="w-48 h-48 bg-zinc-200 flex items-center justify-center overflow-hidden">
+                            <div class="w-48 h-48 bg-zinc-200 flex items-center justify-center overflow-hidden p-3">
                                 <% if(product.product.image && product.product.image.data){ %>
                                     <img
                                         src="data:<%= product.product.image.contentType %>;base64,<%= product.product.image.data.toString('base64') %>"
-                                        class="w-full h-full object-cover"
+                                        class="max-w-full max-h-full object-contain"
                                     >
                                 <% } else { %>
                                     <div class="text-zinc-400">

@@ -18,6 +18,6 @@ module.exports=function isOwnerLoggedIn(req,res,next){
         next();
 
     } catch (err) {
-        return res.status(401).send("Invalid or expired token");
+        return res.status(401).send(err);
     }
 }
