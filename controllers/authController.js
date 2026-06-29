@@ -5,7 +5,6 @@ const genToken=require('../utils/generateToken');
 
 module.exports.registerUser=async (req, res) => {
     try{
-        console.log(req.body);
         const { error } = validateUser(req.body);
         if (error) {
             req.flash("error",error.details[0].message)

@@ -79,12 +79,6 @@ const validateProduct = (data) => {
                 "number.min": "Discount cannot be negative"
             }),
 
-        image: Joi.string()
-            .required()
-            .messages({
-                "string.empty": "Product image is required",
-                "any.required": "Product image is required"
-            }),
 
         bgcolor: Joi.string()
             .messages({

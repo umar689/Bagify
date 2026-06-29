@@ -1,139 +1,138 @@
 <%- include('./partials/header') %>
-
+<!-- 
 <% if(error.length > 0){ %>
+    <div class="absolute top-5 left-1/2 -translate-x-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %> -->
+<% if(error.length > 0){ %> 
     <div id="flash-message"
-        class="fixed top-[88px] left-1/2 z-[9999] -translate-x-1/2 rounded-2xl bg-white/90 px-5 py-3 text-sm font-semibold text-red-500 shadow-xl ring-1 ring-red-100 backdrop-blur-xl transition-all duration-500">
-        <%= error[0] %>
+        class="fixed top-[72px] left-1/2 -translate-x-1/2 z-[9999] px-4 py-3 rounded-md bg-red-500 shadow-lg transition-all duration-500">
+        <span class="text-white">
+            <%= error[0] %>
+        </span>
     </div>
 
     <script>
         setTimeout(() => {
             const flash = document.getElementById("flash-message");
             if (flash) {
-                flash.classList.add("opacity-0", "-translate-y-2");
+                flash.classList.add("opacity-0");
                 setTimeout(() => flash.remove(), 500);
             }
         }, 10000);
     </script>
 <% } %>
 
-<main class="min-h-screen overflow-hidden px-5 pt-28 pb-12">
-    <section class="site-shell grid min-h-[calc(100vh-8rem)] items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]" data-parallax>
-        <div class="relative">
-            <div class="absolute -left-16 top-8 h-56 w-56 rounded-full bg-[#6CC6F7]/30 blur-3xl float-idle" data-depth="18"></div>
-            <div class="absolute bottom-4 right-12 h-44 w-44 rounded-full bg-[#FF8BC2]/25 blur-3xl float-idle" data-depth="-14"></div>
+<div class="w-full h-screen flex px-20">
 
-            <div class="hero-reveal mb-8 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/70 px-4 py-2 text-sm font-bold text-[#4F8EF7] shadow-sm backdrop-blur-xl">
-                <i class="ri-sparkling-2-line"></i>
-                Premium carry essentials
-            </div>
+    <!-- Register -->
+    <div class="w-1/2 flex items-center justify-center h-screen">
+        <div class="w-full px-32">
+            <i class="ri-shopping-bag-line text-2xl"></i>
 
-            <h1 class="hero-reveal section-title max-w-3xl text-6xl font-extrabold md:text-7xl">
-                Bags that feel calm, capable, and beautifully made.
-            </h1>
+            <h3 class="text-4xl">
+                welcome to
+                <span class="text-blue-400 font-semibold">Bagify</span>
+            </h3>
 
-            <p class="hero-reveal mt-6 max-w-xl text-lg leading-8 muted-text">
-                Discover a softer way to shop Bagify. Lightweight backpacks, clean totes, and everyday carry pieces with a polished modern feel.
-            </p>
+            <h4 class="text-2xl mb-5">create your account</h4>
 
-            <div class="hero-reveal mt-8 flex flex-wrap gap-4">
-                <a href="/shop" class="premium-btn px-7 py-4">
-                    <i class="ri-shopping-bag-line"></i>
-                    Explore Bags
-                </a>
-                <a href="/owners/login" class="premium-btn premium-btn-dark px-7 py-4">
-                    <i class="ri-admin-line"></i>
-                    Owner Login
-                </a>
-            </div>
-        </div>
+            <form autocomplete="off" action="/users/register" method="post">
 
-        <div class="hero-reveal premium-card soft-panel relative overflow-hidden p-5 md:p-8" data-depth="10">
-            <div class="absolute right-6 top-6 rounded-full bg-white/70 px-4 py-2 text-sm font-bold text-[#1F2937] shadow-sm">
-                New season edit
-            </div>
-            <div class="grid gap-5">
-                <div class="rounded-[28px] bg-gradient-to-br from-[#DDF3FF] via-white to-[#FFE7F2] p-8 shadow-inner">
-                    <img src="/images/1bag.png" alt="Bagify backpack" class="float-idle mx-auto h-[25rem] max-w-full object-contain drop-shadow-2xl">
-                </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="rounded-3xl bg-white/80 p-4 text-center shadow-sm">
-                        <p class="text-2xl font-extrabold text-[#4F8EF7]">8+</p>
-                        <p class="text-xs font-bold muted-text">styles</p>
-                    </div>
-                    <div class="rounded-3xl bg-white/80 p-4 text-center shadow-sm">
-                        <p class="text-2xl font-extrabold text-[#FF8BC2]">Soft</p>
-                        <p class="text-xs font-bold muted-text">finish</p>
-                    </div>
-                    <div class="rounded-3xl bg-white/80 p-4 text-center shadow-sm">
-                        <p class="text-2xl font-extrabold text-[#1F2937]">D2C</p>
-                        <p class="text-xs font-bold muted-text">quality</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                <input
+                    class="bg-zinc-100 block w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                    type="text"
+                    placeholder="Full Name"
+                    name="username">
 
-    <section class="site-shell reveal mt-10 grid gap-6 lg:grid-cols-2">
-        <div class="premium-card p-8">
-            <div class="mb-7 flex items-center gap-3">
-                <span class="icon-pill h-11 w-11 text-xl text-[#4F8EF7]">
-                    <i class="ri-user-add-line"></i>
-                </span>
-                <div>
-                    <h2 class="text-3xl font-extrabold">Create your account</h2>
-                    <p class="muted-text">Start shopping in a few seconds.</p>
-                </div>
-            </div>
+                <input
+                    class="bg-zinc-100 block w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                    type="email"
+                    placeholder="Email"
+                    name="email">
 
-            <form autocomplete="off" action="/users/register" method="post" class="space-y-4">
-                <input class="premium-input" type="text" placeholder="Full Name" name="username">
-                <input class="premium-input" type="email" placeholder="Email" name="email">
+                <!-- Password -->
+                <div class="relative mb-3">
+                    <input
+                        id="registerPassword"
+                        class="bg-zinc-100 block w-full px-3 py-2 pr-10 border rounded-md border-zinc-200"
+                        type="password"
+                        placeholder="Password"
+                        name="password">
 
-                <div class="relative">
-                    <input id="registerPassword" class="premium-input pr-12" type="password" placeholder="Password" name="password">
-                    <i id="registerEye" class="ri-eye-line absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-xl text-gray-500"></i>
+                    <i
+                        id="registerEye"
+                        class="ri-eye-line absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-lg">
+                    </i>
                 </div>
 
-                <input class="premium-btn w-full cursor-pointer px-6 py-4" type="submit" value="Create My Account">
+                <input
+                    class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white"
+                    type="submit"
+                    value="Create My Account">
             </form>
         </div>
+    </div>
 
-        <div class="premium-card p-8">
-            <div class="mb-7 flex items-center gap-3">
-                <span class="icon-pill h-11 w-11 text-xl text-[#FF8BC2]">
-                    <i class="ri-login-circle-line"></i>
-                </span>
-                <div>
-                    <h2 class="text-3xl font-extrabold">Login your account</h2>
-                    <p class="muted-text">Welcome back to Bagify.</p>
+    <!-- Login -->
+        <div class="w-1/2 flex items-center justify-center h-screen">
+            <div class="w-full px-32">
+
+                <h4 class="text-2xl capitalize mb-5">
+                    Login your account
+                </h4>
+
+                <form autocomplete="off" action="/users/login" method="post">
+
+                    <input
+                        class="block bg-zinc-100 w-full px-3 py-2 border rounded-md mb-3 border-zinc-200"
+                        type="email"
+                        placeholder="Email"
+                        name="email">
+
+                    <!-- Password -->
+                    <div class="relative mb-3">
+                        <input
+                            id="loginPassword"
+                            class="block bg-zinc-100 w-full px-3 py-2 pr-10 border rounded-md border-zinc-200"
+                            type="password"
+                            placeholder="Password"
+                            name="password">
+
+                        <i
+                            id="loginEye"
+                            class="ri-eye-line absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-lg">
+                        </i>
+                    </div>
+
+                    <input
+                        class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white hover:bg-blue-600 transition"
+                        type="submit"
+                        value="Login">
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center my-8">
+                    <div class="flex-1 h-px bg-zinc-300"></div>
+                    <span class="px-4 text-sm text-zinc-500">OR</span>
+                    <div class="flex-1 h-px bg-zinc-300"></div>
                 </div>
+
+                <!-- Owner Login -->
+                <a
+                    href="/owners/login"
+                    class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-zinc-900 to-black text-white font-medium hover:scale-[1.02] hover:shadow-lg transition-all duration-300"
+                >
+                    <i class="ri-admin-line text-lg"></i>
+                    Login as Owner
+                </a>
+
             </div>
-
-            <form autocomplete="off" action="/users/login" method="post" class="space-y-4">
-                <input class="premium-input" type="email" placeholder="Email" name="email">
-
-                <div class="relative">
-                    <input id="loginPassword" class="premium-input pr-12" type="password" placeholder="Password" name="password">
-                    <i id="loginEye" class="ri-eye-line absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-xl text-gray-500"></i>
-                </div>
-
-                <input class="premium-btn w-full cursor-pointer px-6 py-4" type="submit" value="Login">
-            </form>
-
-            <div class="my-7 flex items-center">
-                <div class="h-px flex-1 bg-slate-200"></div>
-                <span class="px-4 text-sm font-bold muted-text">OR</span>
-                <div class="h-px flex-1 bg-slate-200"></div>
-            </div>
-
-            <a href="/owners/login" class="premium-btn premium-btn-dark w-full px-6 py-4">
-                <i class="ri-admin-line text-lg"></i>
-                Login as Owner
-            </a>
         </div>
-    </section>
-</main>
+</div>
 
 <script>
     function togglePassword(passwordId, eyeId) {
