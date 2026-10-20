@@ -4,6 +4,22 @@ Bagify is a server-rendered online storefront for bags. Shoppers can create an a
 
 The repository contains the core storefront and catalogue-management flows. It does not currently implement checkout, payment processing, or order creation.
 
+## Website screenshots
+
+Full-page desktop captures of the running application (1440 px viewport):
+
+### Shopper sign-in and registration
+
+![Bagify homepage with shopper sign-in and registration](docs/screenshots/homepage.png)
+
+### Shopper catalogue
+
+![Bagify shop page showing the product catalogue](docs/screenshots/shop.png)
+
+### Store owner sign-in
+
+![Bagify owner login page](docs/screenshots/owner-login.png)
+
 ## Features
 
 ### Shopper
